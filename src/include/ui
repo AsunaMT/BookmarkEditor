@@ -1,4 +1,6 @@
 #pragma once
 
-#include "ui_sys/label_provider.h"
-#include "ui_sys/show_tree.h"
+#include <ui_sys/file_node.h>
+#include <ui_sys/label_decorator.h>
+#include <ui_sys/label_provider.h>
+#include <ui_sys/show_tree.h>

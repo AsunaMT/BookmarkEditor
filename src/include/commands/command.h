@@ -1,7 +1,7 @@
 #ifndef COMMAND_H_
 #define COMMAND_H_
 
-#include "bmk_sys/bmk_elements.h"
+#include <bmk_sys/bmk_elements.h>
 
 enum CmdKey { kAdd, kDelete };
 
