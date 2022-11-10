@@ -6,14 +6,14 @@
 
 class AddCmd {
  private:
-  static deque<int> history;
-  static const string ctype;
+  static std::deque<int> history;
+  static const std::string ctype;
 
  public:
   AddCmd();
-  virtual void excute() = 0;
-  virtual void undo() = 0;
-  virtual void redo() = 0;
+  virtual void excute();
+  virtual void undo();
+  virtual void redo();
 };
 
 #endif
