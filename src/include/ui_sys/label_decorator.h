@@ -5,7 +5,7 @@
 
 #include "label_provider.h"
 
-template <class T>
+template <typename T>
 class DirtyLabelProvider : public LabelProvider<T> {
  private:
   const LabelProvider<T>* provider_;
@@ -19,7 +19,7 @@ class DirtyLabelProvider : public LabelProvider<T> {
   }
 };
 
-template <class T>
+template <typename T>
 class QuoteLabelProvider : public LabelProvider<T> {
  private:
   const LabelProvider<T>* provider_;

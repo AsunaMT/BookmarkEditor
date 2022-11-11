@@ -13,20 +13,21 @@ class BmkController {
   std::string workspace_url_;
   std::map<CmdKey, std::unique_ptr<Command>> commands_;
   std::vector<std::unique_ptr<BmkElements>> roots_;
+  auto AddBookmark() -> void;
+  auto AddTitle() -> void;
+  auto DeleteBookmark() -> void;
+  auto DeleteTitle() -> void;
+  auto Save() -> void;
+  auto Undo() -> void;
+  auto Redo() -> void;
+  auto ShowTree() -> void;
+  auto LsTree() -> void;
+  auto Read(std::string name) -> void;
 
  public:
   BmkController();
   ~BmkController();
-  void AddBookmark();
-  void AddTitle();
-  void DeleteBookmark();
-  void DeleteTitle();
-  void Save();
-  void Undo();
-  void Redo();
-  void ShowTree();
-  void LsTree();
-  void Read(std::string name);
+  auto Launch() -> void;
 };
 
 #endif

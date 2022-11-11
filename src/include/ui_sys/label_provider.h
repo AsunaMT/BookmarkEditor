@@ -3,7 +3,7 @@
 
 #include <string>
 
-template <class T>
+template <typename T>
 class LabelProvider {
  public:
   virtual auto LableOf(const T& obj) const -> std::string = 0;

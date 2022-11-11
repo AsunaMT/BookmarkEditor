@@ -11,10 +11,10 @@
 #include "gtest/gtest.h"
 #include "ui_sys/show_tree.h"
 
-using ::testing::_;
-using ::testing::AtLeast;
-using ::testing::Exactly;
-using ::testing::Return;
+// using ::testing::_;
+// using ::testing::AtLeast;
+// using ::testing::Exactly;
+// using ::testing::Return;
 using namespace testing;
 using namespace std;
 
@@ -37,7 +37,7 @@ TEST(DIRTY_LABEL_TEST, SHOW_DIRTY_LABE) {
 }
 
 TEST(SHOW_TREE_TEST1, SHOW_FILE_TREE) {
-  FileNode fileNode(".\\src");
+  FileNode fileNode("src");
   fileNode.MakeFiletree();
   ShowTree tree(&fileNode);
   string val1 = tree.getTreeStr();
