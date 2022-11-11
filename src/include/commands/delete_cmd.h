@@ -5,7 +5,7 @@
 
 class DeleteCmd {
  protected:
-  BmkElements* bmk_elements_;
+  BmkElement* bmk_element_;
 
  public:
   auto excute() -> void;

@@ -1,16 +1,14 @@
 #include <limits.h>
 
+#include <bmk>
+#include <command>
 #include <cstdlib>
 #include <iostream>
 #include <string>
 #include <ui>
 
-#include "bmk_sys/bmk_elements.h"
-#include "command"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "ui_sys/label_decorator.h"
-#include "ui_sys/show_tree.h"
 
 // using ::testing::_;
 // using ::testing::AtLeast;
@@ -45,9 +43,12 @@ TEST(SHOW_TREE_TEST1, SHOW_FILE_TREE) {
   // cout << val1 << endl;
   string val2 =
       "├─include\n"
+      "│ ├─\"bmk\"\n"
       "│ ├─\"bmk_controller.h\"\n"
       "│ ├─bmk_sys\n"
-      "│ │ └─\"bmk_elements.h\"\n"
+      "│ │ ├─\"bmk_element.h\"\n"
+      "│ │ ├─\"bookmark.h\"\n"
+      "│ │ └─\"title.h\"\n"
       "│ ├─\"command\"\n"
       "│ ├─commands\n"
       "│ │ ├─\"add_cmd.h\"\n"
@@ -63,11 +64,12 @@ TEST(SHOW_TREE_TEST1, SHOW_FILE_TREE) {
       "└─src\n"
       "  ├─\"add_cmd.cc\"\n"
       "  ├─\"bmk_controller.cc\"\n"
-      "  ├─\"bmk_elements.cc\"\n"
+      "  ├─\"bookmark.cc\"\n"
       "  ├─\"delete_cmd.cc\"\n"
       "  ├─\"file_node.cc\"\n"
       "  ├─\"label_decorator.cc\"\n"
-      "  └─\"show_tree.cc\"\n";
+      "  ├─\"show_tree.cc\"\n"
+      "  └─\"title.cc\"\n";
   EXPECT_EQ(val1, val2);
 }
 

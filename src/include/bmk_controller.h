@@ -5,14 +5,14 @@
 #include <memory>
 #include <vector>
 
-#include "bmk_sys/bmk_elements.h"
+#include "bmk_sys/bmk_element.h"
 #include "commands/command.h"
 
 class BmkController {
  private:
   std::string workspace_url_;
   std::map<CmdKey, std::unique_ptr<Command>> commands_;
-  std::vector<std::unique_ptr<BmkElements>> roots_;
+  std::vector<std::unique_ptr<BmkElement>> roots_;
   auto AddBookmark() -> void;
   auto AddTitle() -> void;
   auto DeleteBookmark() -> void;
