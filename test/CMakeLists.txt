@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)  # cmake -G "MinGW Makefiles" ..
 project(GTESTWIN_TEST)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 # gtest库相关
 # 如果把gtest放到test目录下，则使用如下包含关系：
 add_subdirectory(./googletest-release-1.8.1)  # 编译gtest

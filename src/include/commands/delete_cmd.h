@@ -8,9 +8,9 @@ class DeleteCmd {
   BmkElements* bmk_elements_;
 
  public:
-  virtual void excute() = 0;
-  virtual void undo() = 0;
-  virtual void redo() = 0;
+  auto excute() -> void;
+  auto undo() -> void;
+  auto redo() -> void;
 };
 
 #endif

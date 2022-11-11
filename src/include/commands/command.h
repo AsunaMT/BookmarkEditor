@@ -11,9 +11,9 @@ class Command {
 
  public:
   Command(BmkElements* bmk_elements);
-  virtual void excute() = 0;
-  virtual void undo() = 0;
-  virtual void redo() = 0;
+  virtual auto excute() -> void = 0;
+  virtual auto undo() -> void = 0;
+  virtual auto redo() -> void = 0;
 };
 
 #endif

@@ -10,9 +10,9 @@ class AddCmd {
 
  public:
   AddCmd();
-  virtual void excute();
-  virtual void undo();
-  virtual void redo();
+  auto excute() -> void {}
+  auto undo() -> void;
+  auto redo() -> void;
 };
 
 #endif

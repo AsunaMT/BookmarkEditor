@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)  # cmake -G "MinGW/Unit Makefiles" ..
 project(BOOKMARK)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 # 头文件目录
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/include")
 # 源文件目录
