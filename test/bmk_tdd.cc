@@ -9,6 +9,7 @@
 #include "command"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "ui_sys/label_decorator.h"
 #include "ui_sys/show_tree.h"
 
 // using ::testing::_;
@@ -60,14 +61,18 @@ TEST(SHOW_TREE_TEST1, SHOW_FILE_TREE) {
       "│   └─\"show_tree.h\"\n"
       "├─\"main.cc\"\n"
       "└─src\n"
+      "  ├─\"add_cmd.cc\"\n"
       "  ├─\"bmk_controller.cc\"\n"
       "  ├─\"bmk_elements.cc\"\n"
-      "  └─\"label_decorator.cc\"\n";
+      "  ├─\"delete_cmd.cc\"\n"
+      "  ├─\"file_node.cc\"\n"
+      "  ├─\"label_decorator.cc\"\n"
+      "  └─\"show_tree.cc\"\n";
   EXPECT_EQ(val1, val2);
 }
 
 TEST(SHOW_TREE_TEST2, SHOW_BMK_TREE) {
-  Title root("workspace");
+  Title root("workspace", 0);
   Title t1("title1");
   Title t2("title2");
   Title t3("title3");
@@ -100,7 +105,7 @@ TEST(SHOW_TREE_TEST2, SHOW_BMK_TREE) {
 }
 
 TEST(ADD_TEST, ADD_BMK_TO_TITLE) {
-  Title root("workspace");
+  Title root("workspace", 0);
   Title t1("title1");
   Bookmark b1("bmk1");
   root.Add(&t1);
@@ -116,7 +121,7 @@ TEST(ADD_TEST, ADD_BMK_TO_TITLE) {
 }
 
 TEST(REMOVE_TEST, REMOVE_BMK_IN_TITLE) {
-  Title root("workspace");
+  Title root("workspace", 0);
   Title t1("title1");
   Bookmark b1("bmk1");
   root.Add(&t1);
@@ -134,7 +139,7 @@ TEST(REMOVE_TEST, REMOVE_BMK_IN_TITLE) {
 }
 
 TEST(DEEPREMOVE_TEST, DEEPREMOVE_BMK_IN_TITLE) {
-  Title root("workspace");
+  Title root("workspace", 0);
   Title t1("title1");
   Bookmark b1("bmk1");
   t1.Add(&b1);
@@ -149,4 +154,37 @@ TEST(DEEPREMOVE_TEST, DEEPREMOVE_BMK_IN_TITLE) {
   val2 = root.GetInnerBmk("bmk1");
   EXPECT_EQ(val1, nullptr);
   EXPECT_EQ(val2, nullptr);
+}
+
+TEST(TITLE_LEVEL_TEST, SHOW_TITLE_LEVEL) {
+  Title root("workspace");
+  Title t1("title1"), t2("title2"), t3("title3");
+  t1.Add(&t2);
+  auto val1 = t1.GetInnerBmk("title2")->get_level();
+  EXPECT_EQ(val1, 2);
+  root.Add(&t1);
+  auto val2 = root.Find("title2", kTitle)->get_level();
+  // auto val2 = root.GetInnerBmk("title1")->GetInnerBmk("title2")->get_level();
+  EXPECT_EQ(val2, 3);
+}
+//[elearning](https://elearning.fudan.edu.cn/courses)
+
+TEST(MD_FORMAT_TEST, SHOW_MAD_FORMAT) {
+  Title root("workspace", 0);
+  Title t1("title1"), t2("title2");
+  t1.Add(&t2);
+  root.Add(&t1);
+  Bookmark b1("elearning", "https://elearning.fudan.edu.cn/courses");
+  // cout << b1.ShowMdFormat() << endl;
+  root.Add(&b1);
+  // int i = 10;
+  // while (i--) {
+  //   cout << b1.ShowMdFormat() << endl;
+  // }
+  auto val1 = root.Find("title1", kTitle)->ShowMdFormat();
+  auto val2 = root.Find("title2", kTitle)->ShowMdFormat();
+  auto val3 = root.Find("elearning", kBookmark)->ShowMdFormat();
+  EXPECT_EQ(val1, "# title1");
+  EXPECT_EQ(val2, "## title2");
+  EXPECT_EQ(val3, "[elearning](https://elearning.fudan.edu.cn/courses)");
 }

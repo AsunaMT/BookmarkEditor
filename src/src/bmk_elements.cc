@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <memory>
 
+#include "ui_sys/label_decorator.h"
 #include "ui_sys/show_tree.h"
 
 // Title::TitleLableProvider title_label_provider_;
@@ -13,18 +14,21 @@
 // auto BmkElements::set_name(const std::string& name) -> void { this->name_ =
 // name; }
 
-Title::Title(const std::string& name)
-    : name_(name),
+Title::Title(const std::string& name, const unsigned& level)
+    : level_(level),
+      name_(name),
       parent_(nullptr),
-      title_start_index_(INIT_TITLE_START_INDEX) {}
+      title_start_index_(DEFAULT_TITLE_START_INDEX) {}
 
 Title::Title(const BmkElements& title) {
+  level_ = title.get_level();
   name_ = title.get_name();
   parent_ = nullptr;
   title_start_index_ = 0;
 }
 
 Title::Title(const Title& title) {
+  level_ = title.get_level();
   name_ = title.get_name();
   parent_ = nullptr;
   title_start_index_ = 0;
@@ -35,17 +39,40 @@ Title::Title(const Title& title) {
 
 auto Title::get_name() const -> std::string { return name_; }
 auto Title::set_name(const std::string& name) -> void { name_ = name; }
+auto Title::set_level(const unsigned& level) -> void {
+  level_ = level;
+  for (auto& bmk : elements_) {
+    if (bmk->GetType() == kTitle) {
+      auto child = (Title*)(bmk.get());
+      child->set_level(level + 1);
+    }
+  }
+}
+auto Title::get_level() const -> unsigned { return level_; }
+auto Title::get_parent() const -> BmkElements* { return parent_; }
+auto Title::set_parent(BmkElements* bmk) -> void {
+  if (bmk->GetType() != kTitle) {
+    std::cout << "Warning: Bookmark can't be a home directory ." << std::endl;
+    return;
+  }
+  parent_ = bmk;
+  auto parent = (Title*)bmk;
+  // std::cout << parent->get_level() + 1 << std::endl;
+  set_level(parent->get_level() + 1);
+}
 auto Title::GetType() const -> BmkElementType { return kTitle; }
 
 auto Title::Add(BmkElements* node) -> void {
   switch (node->GetType()) {
     case kTitle: {
-      elements_.push_back(std::make_unique<Title>(*(Title*)node));
+      node->set_parent(this);
+      elements_.emplace_back(std::make_unique<Title>(*(Title*)node));
       break;
     }
     case kBookmark: {
-      elements_.insert(elements_.begin() + title_start_index_,
-                       std::make_unique<Bookmark>(*(Bookmark*)node));
+      node->set_parent(this);
+      elements_.emplace(elements_.begin() + title_start_index_,
+                        std::make_unique<Bookmark>(*(Bookmark*)node));
       title_start_index_++;
       break;
     }
@@ -130,11 +157,15 @@ auto Title::DeepRemove(const std::string& name, const BmkElementType& type)
   }
 }
 
+auto Title::ShowMdFormat() const -> std::string {
+  return MdTitleLableProvider<Title>(title_label_provider_).LableOf(*this);
+}
+
 Bookmark::Bookmark(const std::string& name, const std::string& url)
-    : name_(name), parent_(nullptr), url_(url), dirty_(INIT_DIRTY) {}
+    : name_(name), parent_(nullptr), url_(url), dirty_(DEFAULT_DIRTY) {}
 
 Bookmark::Bookmark(const Bookmark& bookmark)
-    : dirty_(INIT_DIRTY), parent_(nullptr) {
+    : dirty_(DEFAULT_DIRTY), parent_(nullptr) {
   name_ = bookmark.get_name();
   url_ = bookmark.get_url();
 }
@@ -142,8 +173,10 @@ Bookmark::Bookmark(const Bookmark& bookmark)
 auto Bookmark::get_name() const -> std::string { return name_; }
 auto Bookmark::set_name(const std::string& name) -> void { name_ = name; }
 auto Bookmark::get_url() const -> std::string { return url_; }
-
 auto Bookmark::set_url(const std::string& url) -> void { url_ = url; }
+
+auto Bookmark::get_parent() const -> BmkElements* { return parent_; }
+auto Bookmark::set_parent(BmkElements* bmk) -> void { parent_ = bmk; }
 
 auto Bookmark::GetType() const -> BmkElementType { return kBookmark; }
 
@@ -200,4 +233,11 @@ auto Bookmark::Find(const std::string& name, const BmkElementType& type) const
   std::cout << "Warning: You can't do this operation(Find) on a bookmark."
             << std::endl;
   return nullptr;
+}
+
+auto Bookmark::set_level(const unsigned& level) -> void {}
+auto Bookmark::get_level() const -> unsigned { return -1; }
+auto Bookmark::ShowMdFormat() const -> std::string {
+  static MdLinkLableProvider<Bookmark> provider(bookmark_label_provider_);
+  return provider.LableOf(*this);
 }
