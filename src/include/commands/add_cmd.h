@@ -1,18 +1,62 @@
 #ifndef ADD_CMD_H_
 #define ADD_CMD_H_
 
-#include <bmk_sys/bmk_element.h>
+#include <memory>
+#include <type_traits>
 
+#include "bmk_sys/bmk_element.h"
+#include "bmk_sys/bookmark.h"
+#include "bmk_sys/title.h"
 #include "command.h"
 
-class AddCmd {
+constexpr static const unsigned DEFAULT_ADD_HISTORY_MAX = 10;
+constexpr static const unsigned DEFAULT_CACHE_MAX = 1;
+struct AddInfo {
+  std::string name;
+  Title* root;
+  BmkElement* node;
+};
+
+struct AddHistoryInfo {
+  Title* title;
+  // std::string name;
+  // BmkElementType type;
+  BmkElement* node;
+};
+
+struct AddCacheInfo {
+  Title* title;
+  std::unique_ptr<BmkElement> node;
+  // AddCacheInfo(AddCacheInfo&& add) {
+  //   title = add.title;
+  //   node = nullptr;
+  //   std::swap(node, add.node);
+  // }
+  // AddCacheInfo(AddCacheInfo& add) {
+  //   title = add.title;
+  //   node = nullptr;
+  //   std::swap(node, add.node);
+  // }
+  // AddCacheInfo& operator=(AddCacheInfo& add) {
+  //   title = add.title;
+  //   node = nullptr;
+  //   std::swap(node, add.node);
+  //   return *this;
+  // }
+};
+
+class AddCmd : public Command {
  private:
-  static std::deque<int> history;
-  static const std::string ctype;
+  AddInfo add_info_;
+  static std::deque<AddHistoryInfo> history_;
+  static std::deque<AddCacheInfo> cache_;
+  static unsigned history_max_;
+  constexpr static const CmdKey ctype_ = kAdd;
 
  public:
-  AddCmd();
-  auto excute() -> void {}
+  AddCmd(const AddCmd& addCmd);
+  AddCmd(AddInfo&& add_info);
+  auto excute() -> void;
   auto undo() -> void;
   auto redo() -> void;
 };

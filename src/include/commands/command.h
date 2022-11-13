@@ -7,10 +7,8 @@ enum CmdKey { kAdd, kDelete };
 
 class Command {
  protected:
-  BmkElement* bmk_element_;
-
  public:
-  Command(BmkElement* bmk_element);
+  // Command(BmkElement* bmk_element);
   virtual auto excute() -> void = 0;
   virtual auto undo() -> void = 0;
   virtual auto redo() -> void = 0;

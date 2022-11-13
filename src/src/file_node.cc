@@ -1,5 +1,7 @@
 #include <ui_sys/file_node.h>
 
+#include <filesystem>
+
 FileNode::FileNode(std::string path) : path_(path){};
 
 auto FileNode::MakeFiletree() -> void {

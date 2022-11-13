@@ -1,31 +1,31 @@
 cmake_minimum_required(VERSION 3.0)  # cmake -G "MinGW Makefiles" ..
 project(GTESTWIN_TEST)
-set(CMAKE_CXX_STANDARD 20)
+# set(CMAKE_CXX_STANDARD 20)
 # set(CMAKE_CXX_FLAGS "-O3")
-# gteståº“ç›¸å…³
-# å¦‚æœæŠŠgtestæ”¾åˆ°testç›®å½•ä¸‹ï¼Œåˆ™ä½¿ç”¨å¦‚ä¸‹åŒ…å«å…³ç³»ï¼š
-add_subdirectory(./googletest-release-1.8.1)  # ç¼–è¯‘gtest
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/googletest-release-1.8.1/googletest/include)  # åŒ…å«gtestç­‰å¤´æ–‡ä»¶
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/googletest-release-1.8.1/googlemock/include)  # åŒ…å«gtestç­‰å¤´æ–‡ä»¶
+# gtest¿âÏà¹Ø
+# Èç¹û°Ñgtest·Åµ½testÄ¿Â¼ÏÂ£¬ÔòÊ¹ÓÃÈçÏÂ°üº¬¹ØÏµ£º
+add_subdirectory(./googletest-release-1.8.1)  # ±àÒëgtest
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/googletest-release-1.8.1/googletest/include)  # °üº¬gtestµÈÍ·ÎÄ¼ş
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/googletest-release-1.8.1/googlemock/include)  # °üº¬gtestµÈÍ·ÎÄ¼ş
 
 
-# å¤´æ–‡ä»¶ç›®å½•
+# Í·ÎÄ¼şÄ¿Â¼
 include_directories("../src/include")
-# æºæ–‡ä»¶ç›®å½•
+# Ô´ÎÄ¼şÄ¿Â¼
 AUX_SOURCE_DIRECTORY("../src/src" SRCS)
 
-# æµ‹è¯•ä»£ç ç›®å½•
+# ²âÊÔ´úÂëÄ¿Â¼
 AUX_SOURCE_DIRECTORY("${CMAKE_CURRENT_SOURCE_DIR}" TEST_SRCS)
 
-# ç”Ÿæˆå¯æ‰§è¡Œç¨‹åº
+# Éú³É¿ÉÖ´ĞĞ³ÌĞò
 add_executable(bookmark_test ${DIR_SRCS} ${TEST_SRCS})
 
-# é“¾æ¥æµ‹è¯•åº“,pthread åº“ä¸€å®šè¦å†™åœ¨ ${GTEST_BOTH_LIBRARIES} çš„åé¢, å¦åˆ™ç¼–è¯‘æ—¶ä¼šæŠ¥é”™,
-# GTEST_BOTH_LIBRARIESè¡¨ç¤ºé“¾æ¥google testçš„ä¸¤ä¸ªåº“
+# Á´½Ó²âÊÔ¿â,pthread ¿âÒ»¶¨ÒªĞ´ÔÚ ${GTEST_BOTH_LIBRARIES} µÄºóÃæ, ·ñÔò±àÒëÊ±»á±¨´í,
+# GTEST_BOTH_LIBRARIES±íÊ¾Á´½Ógoogle testµÄÁ½¸ö¿â
 target_link_libraries(bookmark_test
         PRIVATE 
         gtest
-        gtest_main  # ä½¿ç”¨gtestå¸¦çš„mainå‡½æ•°,å¦‚æœæ£€æµ‹åˆ°å¤–éƒ¨æœ‰mainå‡½æ•°ï¼Œåˆ™ä½¿ç”¨å¤–éƒ¨mainå‡½æ•°,å¤–éƒ¨mainå‡½æ•°è¦é…ç½®gteståˆå§‹åŒ–ã€‚
+        gtest_main  # Ê¹ÓÃgtest´øµÄmainº¯Êı,Èç¹û¼ì²âµ½Íâ²¿ÓĞmainº¯Êı£¬ÔòÊ¹ÓÃÍâ²¿mainº¯Êı,Íâ²¿mainº¯ÊıÒªÅäÖÃgtest³õÊ¼»¯¡£
         gmock
-        gmock_main  # ä½¿ç”¨gmockå¸¦çš„mainå‡½æ•°,å¦‚æœæ£€æµ‹åˆ°å¤–éƒ¨æœ‰mainå‡½æ•°ï¼Œåˆ™ä½¿ç”¨å¤–éƒ¨mainå‡½æ•°,ä¸gtest_mainåŒæ—¶å­˜åœ¨åˆ™è‡ªåŠ¨é…ç½®ã€‚
+        gmock_main  # Ê¹ÓÃgmock´øµÄmainº¯Êı,Èç¹û¼ì²âµ½Íâ²¿ÓĞmainº¯Êı£¬ÔòÊ¹ÓÃÍâ²¿mainº¯Êı,Óëgtest_mainÍ¬Ê±´æÔÚÔò×Ô¶¯ÅäÖÃ¡£
         pthread )

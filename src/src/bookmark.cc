@@ -1,12 +1,21 @@
 #include "bmk_sys/bookmark.h"
 
+#include "bmk_sys/bmk_element.h"
+
+
 Bookmark::Bookmark(const std::string& name, const std::string& url)
     : name_(name), parent_(nullptr), url_(url), dirty_(DEFAULT_DIRTY) {}
 
-Bookmark::Bookmark(const Bookmark& bookmark)
+Bookmark::Bookmark(const BmkElement& bookmark)
     : dirty_(DEFAULT_DIRTY), parent_(nullptr) {
   name_ = bookmark.get_name();
-  url_ = bookmark.get_url();
+}
+
+Bookmark::Bookmark(const Bookmark& bookmark)
+    : dirty_(DEFAULT_DIRTY), parent_(nullptr) {
+  name_ = bookmark.name_;
+  url_ = bookmark.url_;
+  parent_ = bookmark.parent_;
 }
 
 auto Bookmark::get_name() const -> std::string { return name_; }
@@ -19,9 +28,10 @@ auto Bookmark::set_parent(BmkElement* bmk) -> void { parent_ = bmk; }
 
 auto Bookmark::GetType() const -> BmkElementType { return kBookmark; }
 
-auto Bookmark::Add(BmkElement* node) -> void {
+auto Bookmark::Add(BmkElement* node) -> BmkElement* {
   std::cout << "Warning: You can't do this operation(Add) on a bookmark."
             << std::endl;
+  return nullptr;
 }
 auto Bookmark::Remove(const std::string& name, const BmkElementType& type)
     -> void {

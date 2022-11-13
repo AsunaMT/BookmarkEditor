@@ -3,6 +3,7 @@
 
 #include "bmk_element.h"
 
+const bool DEFAULT_DIRTY = false;
 class Bookmark : public BmkElement {
  private:
   std::string name_;
@@ -21,6 +22,7 @@ class Bookmark : public BmkElement {
  protected:
  public:
   Bookmark(const std::string& name, const std::string& url = "");
+  Bookmark(const BmkElement& bookmark);
   Bookmark(const Bookmark& bookmark);
   auto get_name() const -> std::string;
   auto set_name(const std::string& name) -> void;
@@ -29,7 +31,7 @@ class Bookmark : public BmkElement {
   auto get_url() const -> std::string;
   auto set_url(const std::string& url) -> void;
   auto GetType() const -> BmkElementType;
-  auto Add(BmkElement* node) -> void;
+  auto Add(BmkElement* node) -> BmkElement*;
   auto Remove(const std::string& name, const BmkElementType& type) -> void;
   auto GetLabel() const -> std::string;
   auto GetList() const -> std::deque<const TreeNode*>;

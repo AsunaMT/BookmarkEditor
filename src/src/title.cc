@@ -1,5 +1,10 @@
 #include "bmk_sys/title.h"
 
+#include <fstream>
+#include <iterator>
+#include <string>
+
+#include "bmk_sys/bmk_element.h"
 #include "bmk_sys/bookmark.h"
 
 // Title::TitleLableProvider title_label_provider_;
@@ -26,7 +31,7 @@ Title::Title(const BmkElement& title) {
 Title::Title(const Title& title) {
   level_ = title.get_level();
   name_ = title.get_name();
-  parent_ = nullptr;
+  parent_ = title.parent_;
   title_start_index_ = 0;
   for (auto& bmk : title.elements_) {
     this->Add(bmk.get());
@@ -58,11 +63,12 @@ auto Title::set_parent(BmkElement* bmk) -> void {
 }
 auto Title::GetType() const -> BmkElementType { return kTitle; }
 
-auto Title::Add(BmkElement* node) -> void {
+auto Title::Add(BmkElement* node) -> BmkElement* {
   switch (node->GetType()) {
     case kTitle: {
       node->set_parent(this);
       elements_.emplace_back(std::make_unique<Title>(*(Title*)node));
+      return elements_.back().get();
       break;
     }
     case kBookmark: {
@@ -70,10 +76,11 @@ auto Title::Add(BmkElement* node) -> void {
       elements_.emplace(elements_.begin() + title_start_index_,
                         std::make_unique<Bookmark>(*(Bookmark*)node));
       title_start_index_++;
-      break;
+      return elements_[title_start_index_ - 1].get();
     }
     default:;
   }
+  return nullptr;
   // elements_.push_back(std::make_unique<Title>(*node));
 }
 
@@ -134,7 +141,7 @@ auto Title::Find(const std::string& name, const BmkElementType& type) const
 }
 
 auto Title::DeepRemove(const std::string& name, const BmkElementType& type)
-    -> void {
+    -> bool {
   for (int i = 0; i < elements_.size();) {
     const std::string& thisName = elements_[i]->get_name();
     const BmkElementType& thisType = elements_[i]->GetType();
@@ -144,20 +151,42 @@ auto Title::DeepRemove(const std::string& name, const BmkElementType& type)
       elements_[i] = nullptr;
       elements_.erase(elements_.begin() + i);
       if (type == kBookmark) title_start_index_--;
+      return true;
     } else {
       if (thisType == kTitle) {
-        ((Title*)elements_[i].get())->DeepRemove(name, type);
+        if (((Title*)elements_[i].get())->DeepRemove(name, type)) return true;
+        //(Title*)elements_[i].get())->DeepRemove(name, type);
       }
       i++;
     }
   }
+  return false;
 }
 
 auto Title::ShowMdFormat() const -> std::string {
   return MdTitleLableProvider<Title>(title_label_provider_).LableOf(*this);
 }
 
+auto Title::GenerateBmk(std::ofstream& out) const -> void {
+  std::string target;
+  for (auto& i : elements_) {
+    out << i->ShowMdFormat() << std::endl;
+    if (i->GetType() == kTitle) {
+      ((Title*)i.get())->GenerateBmk(out);
+    }
+  }
+}
+
 auto Title::TitleLableProvider::LableOf(const Title& title) const
     -> std::string {
   return title.get_name();
+}
+
+auto Title::ExactRemove(BmkElement* bmk) -> void {
+  for (int i = 0; i < elements_.size(); i++) {
+    if (elements_[i].get() == bmk) {
+      elements_.erase(elements_.begin() + i);
+      break;
+    }
+  }
 }

@@ -7,11 +7,7 @@
 #include <string>
 #include <ui>
 
-const bool DEFAULT_DIRTY = false;
-const bool DEFAULT_TITLE_START_INDEX = 0;
-const unsigned DEFAULT_TITLE_LEVEL = 1;
-
-enum BmkElementType { kTitle, kBookmark };
+enum BmkElementType { kTitle, kBookmark, kRoot };
 
 class BmkElement : public TreeNode {
  private:
@@ -27,7 +23,7 @@ class BmkElement : public TreeNode {
   virtual auto get_parent() const -> BmkElement* = 0;
   virtual auto set_parent(BmkElement* bmk) -> void = 0;
   virtual auto GetType() const -> BmkElementType = 0;
-  virtual auto Add(BmkElement* node) -> void = 0;
+  virtual auto Add(BmkElement* node) -> BmkElement* = 0;
   virtual auto Remove(const std::string& name, const BmkElementType& type)
       -> void = 0;
   virtual auto GetLabel() const -> std::string = 0;

@@ -7,6 +7,10 @@
 #include <string>
 #include <ui>
 
+#include "bmk_controller.h"
+#include "bmk_sys/bmk_element.h"
+#include "commands/add_cmd.h"
+#include "commands/delete_cmd.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
@@ -42,34 +46,34 @@ TEST(SHOW_TREE_TEST1, SHOW_FILE_TREE) {
   string val1 = tree.getTreeStr();
   // cout << val1 << endl;
   string val2 =
-      "â”œâ”€include\n"
-      "â”‚ â”œâ”€\"bmk\"\n"
-      "â”‚ â”œâ”€\"bmk_controller.h\"\n"
-      "â”‚ â”œâ”€bmk_sys\n"
-      "â”‚ â”‚ â”œâ”€\"bmk_element.h\"\n"
-      "â”‚ â”‚ â”œâ”€\"bookmark.h\"\n"
-      "â”‚ â”‚ â””â”€\"title.h\"\n"
-      "â”‚ â”œâ”€\"command\"\n"
-      "â”‚ â”œâ”€commands\n"
-      "â”‚ â”‚ â”œâ”€\"add_cmd.h\"\n"
-      "â”‚ â”‚ â”œâ”€\"command.h\"\n"
-      "â”‚ â”‚ â””â”€\"delete_cmd.h\"\n"
-      "â”‚ â”œâ”€\"ui\"\n"
-      "â”‚ â””â”€ui_sys\n"
-      "â”‚   â”œâ”€\"file_node.h\"\n"
-      "â”‚   â”œâ”€\"label_decorator.h\"\n"
-      "â”‚   â”œâ”€\"label_provider.h\"\n"
-      "â”‚   â””â”€\"show_tree.h\"\n"
-      "â”œâ”€\"main.cc\"\n"
-      "â””â”€src\n"
-      "  â”œâ”€\"add_cmd.cc\"\n"
-      "  â”œâ”€\"bmk_controller.cc\"\n"
-      "  â”œâ”€\"bookmark.cc\"\n"
-      "  â”œâ”€\"delete_cmd.cc\"\n"
-      "  â”œâ”€\"file_node.cc\"\n"
-      "  â”œâ”€\"label_decorator.cc\"\n"
-      "  â”œâ”€\"show_tree.cc\"\n"
-      "  â””â”€\"title.cc\"\n";
+      "©À©¤include\n"
+      "©¦ ©À©¤\"bmk\"\n"
+      "©¦ ©À©¤\"bmk_controller.h\"\n"
+      "©¦ ©À©¤bmk_sys\n"
+      "©¦ ©¦ ©À©¤\"bmk_element.h\"\n"
+      "©¦ ©¦ ©À©¤\"bookmark.h\"\n"
+      "©¦ ©¦ ©¸©¤\"title.h\"\n"
+      "©¦ ©À©¤\"command\"\n"
+      "©¦ ©À©¤commands\n"
+      "©¦ ©¦ ©À©¤\"add_cmd.h\"\n"
+      "©¦ ©¦ ©À©¤\"command.h\"\n"
+      "©¦ ©¦ ©¸©¤\"delete_cmd.h\"\n"
+      "©¦ ©À©¤\"ui\"\n"
+      "©¦ ©¸©¤ui_sys\n"
+      "©¦   ©À©¤\"file_node.h\"\n"
+      "©¦   ©À©¤\"label_decorator.h\"\n"
+      "©¦   ©À©¤\"label_provider.h\"\n"
+      "©¦   ©¸©¤\"show_tree.h\"\n"
+      "©À©¤\"main.cc\"\n"
+      "©¸©¤src\n"
+      "  ©À©¤\"add_cmd.cc\"\n"
+      "  ©À©¤\"bmk_controller.cc\"\n"
+      "  ©À©¤\"bookmark.cc\"\n"
+      "  ©À©¤\"delete_cmd.cc\"\n"
+      "  ©À©¤\"file_node.cc\"\n"
+      "  ©À©¤\"label_decorator.cc\"\n"
+      "  ©À©¤\"show_tree.cc\"\n"
+      "  ©¸©¤\"title.cc\"\n";
   EXPECT_EQ(val1, val2);
 }
 
@@ -95,31 +99,87 @@ TEST(SHOW_TREE_TEST2, SHOW_BMK_TREE) {
   string val1 = tree.getTreeStr();
   // cout << val1;
   string val2 =
-      "â”œâ”€\"ff\"\n"
-      "â””â”€title1\n"
-      "  â”œâ”€\"bb\"\n"
-      "  â”œâ”€\"*cc\"\n"
-      "  â”œâ”€\"dd\"\n"
-      "  â”œâ”€title2\n"
-      "  â”‚ â””â”€\"aa\"\n"
-      "  â””â”€title3\n";
+      "©À©¤\"ff\"\n"
+      "©¸©¤title1\n"
+      "  ©À©¤\"bb\"\n"
+      "  ©À©¤\"*cc\"\n"
+      "  ©À©¤\"dd\"\n"
+      "  ©À©¤title2\n"
+      "  ©¦ ©¸©¤\"aa\"\n"
+      "  ©¸©¤title3\n";
   EXPECT_EQ(val1, val2);
 }
 
 TEST(ADD_TEST, ADD_BMK_TO_TITLE) {
   Title root("workspace", 0);
   Title t1("title1");
+  Title t2("title2");
+  Title t3("title3");
+  // t1.Add(&t2);
   Bookmark b1("bmk1");
   root.Add(&t1);
   root.Add(&b1);
+  // cout << ShowTree(&root).getTreeStr();
   auto val1 = root.GetInnerBmk("title1");
   auto val2 = root.GetInnerBmk("bmk1");
   auto val3 = root.GetInnerBmk("bmk2");
+  t2.Add(&t3);
+  val1->Add(&t2);
+  auto val4 = root.Find("title2", kTitle);
+  auto val5 = root.Find("title3", kTitle);
   ASSERT_NE(val1, nullptr);
   ASSERT_NE(val1, nullptr);
   EXPECT_EQ(val3, nullptr);
   EXPECT_EQ(val1->get_name(), "title1");
   EXPECT_EQ(val2->get_name(), "bmk1");
+  EXPECT_EQ(val4->get_name(), "title2");
+  EXPECT_EQ(val5->get_name(), "title3");
+}
+
+TEST(ADD_COMMAND_TEST, ADD_BMK_TO_TITLE) {
+  Title root("workspace", 0);
+  Title t1("title1");
+  Title t2("title2");
+  Title t3("title3");
+  Bookmark b1("bmk1"), b2("bmk2");
+  root.Add(&b1);
+  AddCmd add1(AddInfo{"", &root, &t1});
+  add1.excute();
+  auto val1 = root.GetInnerBmk("title1");
+  ASSERT_NE(val1, nullptr);
+  EXPECT_EQ(val1->get_name(), "title1");
+  add1.undo();
+  val1 = root.GetInnerBmk("title1");
+  ASSERT_EQ(val1, nullptr);
+  add1.redo();
+  val1 = root.GetInnerBmk("title1");
+  ASSERT_NE(val1, nullptr);
+  EXPECT_EQ(val1->get_name(), "title1");
+  t2.Add(&t3);
+  AddCmd add2(AddInfo{"title1", &root, &t2});
+  add2.excute();
+  auto val2 = root.Find("title2", kTitle);
+  ASSERT_NE(val2, nullptr);
+  EXPECT_EQ(val2->get_name(), "title2");
+  add2.undo();
+  val2 = root.Find("title2", kTitle);
+  ASSERT_EQ(val2, nullptr);
+  add2.redo();
+  val2 = root.Find("title2", kTitle);
+  ASSERT_NE(val2, nullptr);
+  EXPECT_EQ(val2->get_name(), "title2");
+  AddCmd add3(AddInfo{"", &root, &b2});
+  add3.excute();
+  auto val3 = root.GetInnerBmk("bmk2");
+  ASSERT_NE(val3, nullptr);
+  EXPECT_EQ(val3->get_name(), "bmk2");
+  add3.undo();
+  val3 = root.GetInnerBmk("bmk2");
+  ASSERT_EQ(val3, nullptr);
+  add3.redo();
+  val3 = root.GetInnerBmk("bmk2");
+  ASSERT_NE(val3, nullptr);
+  EXPECT_EQ(val3->get_name(), "bmk2");
 }
 
 TEST(REMOVE_TEST, REMOVE_BMK_IN_TITLE) {
@@ -144,6 +204,7 @@ TEST(DEEPREMOVE_TEST, DEEPREMOVE_BMK_IN_TITLE) {
   Title root("workspace", 0);
   Title t1("title1");
   Bookmark b1("bmk1");
+  ShowTree tree(&root);
   t1.Add(&b1);
   root.Add(&t1);
   root.Add(&b1);
@@ -154,8 +215,39 @@ TEST(DEEPREMOVE_TEST, DEEPREMOVE_BMK_IN_TITLE) {
   root.DeepRemove("bmk1", kBookmark);
   val1 = root.GetInnerBmk("title1")->GetInnerBmk("bmk1");
   val2 = root.GetInnerBmk("bmk1");
+  EXPECT_NE(val1, nullptr);
+  EXPECT_EQ(val2, nullptr);
+  root.DeepRemove("bmk1", kBookmark);
+  val1 = root.GetInnerBmk("title1")->GetInnerBmk("bmk1");
+  EXPECT_EQ(val1, nullptr);
+}
+
+TEST(DELETE_COMMAND_TEST, DELETE_BMK_IN_TITLE) {
+  Title root("workspace", 0);
+  Title t1("title1");
+  Bookmark b1("bmk1");
+  t1.Add(&b1);
+  root.Add(&t1);
+  root.Add(&b1);
+  ShowTree tree(&root);
+  auto val1 = root.GetInnerBmk("title1")->GetInnerBmk("bmk1");
+  auto val2 = root.GetInnerBmk("bmk1");
+  EXPECT_NE(val1, nullptr);
+  EXPECT_NE(val2, nullptr);
+  DeleteCmd de1(DeleteInfo{&root, "bmk1", kBookmark});
+  // cout << tree.getTreeStr() << endl;
+  de1.excute();
+  // cout << tree.getTreeStr() << endl;
+  val1 = root.GetInnerBmk("title1")->GetInnerBmk("bmk1");
+  val2 = root.GetInnerBmk("bmk1");
   EXPECT_EQ(val1, nullptr);
   EXPECT_EQ(val2, nullptr);
+  de1.undo();
+  // cout << tree.getTreeStr() << endl;
+  val1 = root.GetInnerBmk("title1")->GetInnerBmk("bmk1");
+  val2 = root.GetInnerBmk("bmk1");
+  EXPECT_NE(val1, nullptr);
+  EXPECT_NE(val2, nullptr);
 }
 
 TEST(TITLE_LEVEL_TEST, SHOW_TITLE_LEVEL) {
@@ -179,10 +271,6 @@ TEST(MD_FORMAT_TEST, SHOW_MAD_FORMAT) {
   Bookmark b1("elearning", "https://elearning.fudan.edu.cn/courses");
   // cout << b1.ShowMdFormat() << endl;
   root.Add(&b1);
-  // int i = 10;
-  // while (i--) {
-  //   cout << b1.ShowMdFormat() << endl;
-  // }
   auto val1 = root.Find("title1", kTitle)->ShowMdFormat();
   auto val2 = root.Find("title2", kTitle)->ShowMdFormat();
   auto val3 = root.Find("elearning", kBookmark)->ShowMdFormat();
