@@ -35,21 +35,7 @@ const std::unordered_map<std::string, OrderType> BmkController::orders_{
     {"ls-tree", kLsTree},
     {"read-bookmark", kReadBookmark}};
 
-BmkController::BmkController() {
-  root_ = std::make_unique<Title>("", 0);
-  // orders_.insert({"add-title", kAddTitle});
-  // orders_.insert({"add-bookmark", kAddBookmark});
-  // orders_.insert({"delete-title", kDeleteTitle});
-  // orders_.insert({"delete-bookmark", kDeleteBookmark});
-  // orders_.insert({"open", kOpen});
-  // orders_.insert({"bookmark", kOpen});
-  // orders_.insert({"save", kSave});
-  // orders_.insert({"undo", kUndo});
-  // orders_.insert({"redo", kRedo});
-  // orders_.insert({"show-tree", kShowTree});
-  // orders_.insert({"ls-tree", kLsTree});
-  // orders_.insert({"read-bookmark", kReadBookmark});
-}
+BmkController::BmkController() { root_ = std::make_unique<Title>("", 0); }
 
 // BmkController::~BmkController() {}
 auto RemoveQuote(std::string& str) {
@@ -128,15 +114,6 @@ auto BmkController::OpenBmk(std::string url) -> void {
 auto BmkController::Launch() -> void {
   std::string order;
   std::vector<std::string> para;
-  // while (std::getline(std::cin, order)) {
-  //   para = stringSplit(order, ' ');
-  //   if (para.front() == "bookmark" || para.front() == "open") break;
-  // }
-  // workspace_url_ = para.back();
-  // workspace_url_.erase(workspace_url_.begin());
-  // workspace_url_.pop_back();
-  // OpenBmk(workspace_url_);
-  // std::cout << ShowTree(root_.get()).getTreeStr();
   while (std::getline(std::cin, order)) {
     para = stringSplit(order, ' ');
     const OrderType type = orders_.find(para.front())->second;

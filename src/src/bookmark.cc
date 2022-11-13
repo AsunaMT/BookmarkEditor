@@ -2,7 +2,6 @@
 
 #include "bmk_sys/bmk_element.h"
 
-
 Bookmark::Bookmark(const std::string& name, const std::string& url)
     : name_(name), parent_(nullptr), url_(url), dirty_(DEFAULT_DIRTY) {}
 
@@ -42,10 +41,10 @@ auto Bookmark::GetLabel() const -> std::string {
   if (dirty_) {
     return QuoteLabelProvider<Bookmark>(
                DirtyLabelProvider<Bookmark>(bookmark_label_provider_))
-        .LableOf(*this);
+        .LabelOf(*this);
   } else {
     return QuoteLabelProvider<Bookmark>(bookmark_label_provider_)
-        .LableOf(*this);
+        .LabelOf(*this);
   }
 }
 
@@ -59,7 +58,7 @@ auto Bookmark::HasChild() const -> bool { return false; }
 
 auto Bookmark::ShowStr() const -> std::string { return GetLabel(); }
 
-auto Bookmark::BookmarkLableProvider::LableOf(const Bookmark& bookmark) const
+auto Bookmark::BookmarkLableProvider::LabelOf(const Bookmark& bookmark) const
     -> std::string {
   return bookmark.get_name();
 }
@@ -83,5 +82,5 @@ auto Bookmark::set_level(const unsigned& level) -> void {}
 auto Bookmark::get_level() const -> unsigned { return -1; }
 auto Bookmark::ShowMdFormat() const -> std::string {
   static MdLinkLableProvider<Bookmark> provider(bookmark_label_provider_);
-  return provider.LableOf(*this);
+  return provider.LabelOf(*this);
 }

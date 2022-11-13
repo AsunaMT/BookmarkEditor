@@ -5,6 +5,6 @@
 //     : provider_(provider_) {}
 
 // template <typename T>
-// auto DirtyLabelProvider<T>::LableOf(const T& obj) const -> std::string {
-//   return "*" + provider_->LableOf(obj);
+// auto DirtyLabelProvider<T>::LabelOf(const T& obj) const -> std::string {
+//   return "*" + provider_->LabelOf(obj);
 // }

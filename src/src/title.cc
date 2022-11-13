@@ -98,7 +98,7 @@ auto Title::Remove(const std::string& name, const BmkElementType& type)
 }
 
 auto Title::GetLabel() const -> std::string {
-  return title_label_provider_.LableOf(*this);
+  return title_label_provider_.LabelOf(*this);
 }
 
 auto Title::GetList() const -> std::deque<const TreeNode*> {
@@ -164,7 +164,7 @@ auto Title::DeepRemove(const std::string& name, const BmkElementType& type)
 }
 
 auto Title::ShowMdFormat() const -> std::string {
-  return MdTitleLableProvider<Title>(title_label_provider_).LableOf(*this);
+  return MdTitleLableProvider<Title>(title_label_provider_).LabelOf(*this);
 }
 
 auto Title::GenerateBmk(std::ofstream& out) const -> void {
@@ -177,7 +177,7 @@ auto Title::GenerateBmk(std::ofstream& out) const -> void {
   }
 }
 
-auto Title::TitleLableProvider::LableOf(const Title& title) const
+auto Title::TitleLableProvider::LabelOf(const Title& title) const
     -> std::string {
   return title.get_name();
 }

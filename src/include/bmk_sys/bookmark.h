@@ -12,7 +12,7 @@ class Bookmark : public BmkElement {
   bool dirty_;
   class BookmarkLableProvider : public LabelProvider<Bookmark> {
    public:
-    auto LableOf(const Bookmark& bookmark) const -> std::string;
+    auto LabelOf(const Bookmark& bookmark) const -> std::string;
   };
   constexpr static const BookmarkLableProvider bookmark_label_provider_ =
       BookmarkLableProvider();

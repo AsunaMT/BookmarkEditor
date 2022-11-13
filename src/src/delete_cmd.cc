@@ -38,8 +38,8 @@ auto DeleteCmd::excute() -> void {
 auto DeleteCmd::undo() -> void {
   auto& buff = history_.back();
   while (buff.titles.size() > 0) {
-    if (buff.titles.back() == nullptr) std::cout << "111" << std::endl;
-    if (buff.nodes.back() == nullptr) std::cout << "222" << std::endl;
+    // if (buff.titles.back() == nullptr) std::cout << "111" << std::endl;
+    // if (buff.nodes.back() == nullptr) std::cout << "222" << std::endl;
     buff.titles.back()->Add(buff.nodes.back().get());
     buff.titles.pop_back();
     buff.nodes.pop_back();

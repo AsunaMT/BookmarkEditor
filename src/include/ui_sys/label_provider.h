@@ -6,7 +6,7 @@
 template <typename T>
 class LabelProvider {
  public:
-  virtual auto LableOf(const T& obj) const -> std::string = 0;
+  virtual auto LabelOf(const T& obj) const -> std::string = 0;
 };
 
 #endif

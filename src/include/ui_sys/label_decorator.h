@@ -14,8 +14,8 @@ class DirtyLabelProvider : public LabelProvider<T> {
   DirtyLabelProvider(const LabelProvider<T>& provider_)
       : provider_(&provider_) {}
 
-  auto LableOf(const T& obj) const -> std::string {
-    return "*" + provider_->LableOf(obj);
+  auto LabelOf(const T& obj) const -> std::string {
+    return "*" + provider_->LabelOf(obj);
   }
 };
 
@@ -28,8 +28,8 @@ class QuoteLabelProvider : public LabelProvider<T> {
   QuoteLabelProvider(const LabelProvider<T>& provider_)
       : provider_(&provider_) {}
 
-  auto LableOf(const T& obj) const -> std::string {
-    return "\"" + provider_->LableOf(obj) + "\"";
+  auto LabelOf(const T& obj) const -> std::string {
+    return "\"" + provider_->LabelOf(obj) + "\"";
   }
 };
 
@@ -42,9 +42,9 @@ class MdTitleLableProvider : public LabelProvider<T> {
   MdTitleLableProvider(const LabelProvider<T>& provider_)
       : provider_(&provider_) {}
 
-  auto LableOf(const T& obj) const -> std::string {
+  auto LabelOf(const T& obj) const -> std::string {
     std::string pre(obj.get_level(), '#');
-    return pre + " " + provider_->LableOf(obj);
+    return pre + " " + provider_->LabelOf(obj);
   }
 };
 
@@ -57,7 +57,7 @@ class MdLinkLableProvider : public LabelProvider<T> {
   MdLinkLableProvider(const LabelProvider<T>& provider_)
       : provider_(&provider_) {}
 
-  auto LableOf(const T& obj) const -> std::string {
+  auto LabelOf(const T& obj) const -> std::string {
     return "[" + obj.get_name() + "](" + obj.get_url() + ")";
   }
 };

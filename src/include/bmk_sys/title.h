@@ -18,7 +18,7 @@ class Title : public BmkElement {
   BmkElement* parent_;
   class TitleLableProvider : public LabelProvider<Title> {
    public:
-    auto LableOf(const Title& title) const -> std::string;
+    auto LabelOf(const Title& title) const -> std::string;
   };
   constexpr static const TitleLableProvider title_label_provider_ =
       TitleLableProvider();

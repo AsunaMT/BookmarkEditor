@@ -19,30 +19,12 @@ struct AddInfo {
 
 struct AddHistoryInfo {
   Title* title;
-  // std::string name;
-  // BmkElementType type;
   BmkElement* node;
 };
 
 struct AddCacheInfo {
   Title* title;
   std::unique_ptr<BmkElement> node;
-  // AddCacheInfo(AddCacheInfo&& add) {
-  //   title = add.title;
-  //   node = nullptr;
-  //   std::swap(node, add.node);
-  // }
-  // AddCacheInfo(AddCacheInfo& add) {
-  //   title = add.title;
-  //   node = nullptr;
-  //   std::swap(node, add.node);
-  // }
-  // AddCacheInfo& operator=(AddCacheInfo& add) {
-  //   title = add.title;
-  //   node = nullptr;
-  //   std::swap(node, add.node);
-  //   return *this;
-  // }
 };
 
 class AddCmd : public Command {
